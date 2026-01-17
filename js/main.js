@@ -1,11 +1,57 @@
 /**
- * Portfolio JavaScript - Enhanced Version
+ * Portfolio JavaScript - Production Version
  * Julian Gomez - Learning Experience Designer & Creative Producer
  *
- * Features: Navigation, Mobile Menu, Lightbox, Language Toggle, Smooth Scroll
+ * Features:
+ * - Responsive Navigation with Mobile Menu
+ * - Image & Video Lightbox Gallery
+ * - Smooth Scroll Navigation
+ * - Language Toggle (Placeholder)
+ * - Custom Video Player Controls
+ * - Volume Normalization
+ * - Collapsible Sections
+ *
+ * @version 2.0.0
+ * @author Julian Gomez
  */
 
 'use strict';
+
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
+
+const CONFIG = {
+    DEBUG_MODE: false, // Set to false for production
+    SCROLL_THROTTLE: 100, // ms
+    NOTIFICATION_DURATION: 2100, // ms
+    VIDEO_VOLUME_LEVELS: {
+        'Tango': 0.3,
+        'Chest': 0.75,
+        'gourmet-gameplay': 1.0
+    }
+};
+
+/**
+ * Safe console logging that respects DEBUG_MODE
+ * @param {...any} args - Arguments to log
+ */
+function debugLog(...args) {
+    if (CONFIG.DEBUG_MODE && console && console.log) {
+        console.log('[Portfolio]', ...args);
+    }
+}
+
+/**
+ * Safe error logging
+ * @param {string} context - Context where error occurred
+ * @param {Error} error - Error object
+ */
+function logError(context, error) {
+    if (console && console.error) {
+        console.error(`[Portfolio Error - ${context}]`, error);
+    }
+}
 
 // ============================================================================
 // STATE MANAGEMENT
@@ -19,23 +65,61 @@ const state = {
 };
 
 // ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Sanitize string to prevent XSS attacks
+ * @param {string} str - String to sanitize
+ * @returns {string} Sanitized string
+ */
+function sanitizeHTML(str) {
+    const temp = document.createElement('div');
+    temp.textContent = str;
+    return temp.innerHTML;
+}
+
+/**
+ * Throttle function execution for performance
+ * @param {Function} func - Function to throttle
+ * @param {number} delay - Delay in milliseconds
+ * @returns {Function} Throttled function
+ */
+function throttle(func, delay) {
+    let lastCall = 0;
+    return function (...args) {
+        const now = Date.now();
+        if (now - lastCall >= delay) {
+            lastCall = now;
+            return func.apply(this, args);
+        }
+    };
+}
+
+// ============================================================================
 // NAVIGATION & HEADER
 // ============================================================================
 
 /**
- * Initialize header scroll effect
+ * Initialize header scroll effect with throttling for performance
  */
 function initHeaderScroll() {
     const header = document.querySelector('.header');
-    if (!header) return;
+    if (!header) {
+        debugLog('Header element not found');
+        return;
+    }
 
-    window.addEventListener('scroll', () => {
+    const handleScroll = throttle(() => {
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
-    });
+    }, CONFIG.SCROLL_THROTTLE);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    debugLog('Header scroll initialized');
 }
 
 /**
@@ -146,7 +230,10 @@ function initLightbox() {
         // Add click handlers for this gallery's items
         galleryItems.forEach((item, index) => {
             item.addEventListener('click', (e) => {
+                // Don't open lightbox if clicking on play overlay (it stops propagation)
+                // All other clicks should open the lightbox
                 e.preventDefault();
+
                 // Set current gallery media and open lightbox
                 state.lightboxImages = galleryMedia;
                 openLightbox(index);
@@ -206,6 +293,88 @@ function initLightbox() {
 }
 
 /**
+ * Create video element for lightbox
+ * @param {Object} media - Media object with src and type
+ * @returns {HTMLElement} Video container element
+ */
+function createLightboxVideo(media) {
+    // Create container
+    const container = document.createElement('div');
+    container.className = 'video-container playing';
+
+    // Create video element
+    const video = document.createElement('video');
+    video.controls = true;
+    video.autoplay = true;
+    video.muted = true;
+    video.style.cssText = 'max-width: 90vw; max-height: 90vh;';
+
+    // Create source element
+    const source = document.createElement('source');
+    source.src = media.src;
+    source.type = 'video/mp4';
+
+    // Add fallback text
+    const fallback = document.createTextNode('Your browser does not support video playback.');
+    video.appendChild(source);
+    video.appendChild(fallback);
+
+    // Create notification (hidden initially)
+    const notification = document.createElement('div');
+    notification.className = 'video-muted-notification';
+    notification.textContent = 'Audio is muted';
+
+    // Assemble container
+    container.appendChild(video);
+    container.appendChild(notification);
+
+    // Apply volume normalization
+    for (const [name, volume] of Object.entries(CONFIG.VIDEO_VOLUME_LEVELS)) {
+        if (media.src.includes(name)) {
+            video.volume = volume;
+            debugLog(`Set video volume for ${name} to ${volume}`);
+            break;
+        }
+    }
+
+    // Show notification only after video starts playing
+    video.addEventListener('playing', () => {
+        if (video.muted) {
+            // Add small delay to ensure video has rendered
+            setTimeout(() => {
+                notification.classList.add('show');
+
+                // Hide notification after configured duration
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, CONFIG.NOTIFICATION_DURATION);
+            }, 150); // 150ms delay for smooth appearance
+        }
+    }, { once: true }); // Only trigger once
+
+    // Hide notification when unmuted
+    video.addEventListener('volumechange', () => {
+        if (!video.muted) {
+            notification.classList.remove('show');
+        }
+    });
+
+    return container;
+}
+
+/**
+ * Create image element for lightbox
+ * @param {Object} media - Media object with src and alt
+ * @returns {HTMLElement} Image element
+ */
+function createLightboxImage(media) {
+    const img = document.createElement('img');
+    img.src = media.src;
+    img.alt = sanitizeHTML(media.alt || 'Gallery image');
+    return img;
+}
+
+/**
  * Open lightbox with specific media (image or video)
  */
 function openLightbox(index) {
@@ -217,18 +386,17 @@ function openLightbox(index) {
 
     if (!lightbox || !content) return;
 
+    // Clear existing content
+    content.innerHTML = '';
+
     const media = state.lightboxImages[index];
 
-    if (media.type === 'video') {
-        content.innerHTML = `
-            <video controls autoplay style="max-width: 90vw; max-height: 90vh;">
-                <source src="${media.src}" type="video/mp4">
-                Your browser does not support video playback.
-            </video>
-        `;
-    } else {
-        content.innerHTML = `<img src="${media.src}" alt="${media.alt}">`;
-    }
+    // Create and append appropriate media element
+    const mediaElement = media.type === 'video'
+        ? createLightboxVideo(media)
+        : createLightboxImage(media);
+
+    content.appendChild(mediaElement);
 
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -279,18 +447,17 @@ function updateLightboxImage() {
     const content = document.getElementById('lightbox-content');
     if (!content) return;
 
+    // Clear existing content
+    content.innerHTML = '';
+
     const media = state.lightboxImages[state.currentImageIndex];
 
-    if (media.type === 'video') {
-        content.innerHTML = `
-            <video controls autoplay style="max-width: 90vw; max-height: 90vh;">
-                <source src="${media.src}" type="video/mp4">
-                Your browser does not support video playback.
-            </video>
-        `;
-    } else {
-        content.innerHTML = `<img src="${media.src}" alt="${media.alt}">`;
-    }
+    // Create and append appropriate media element
+    const mediaElement = media.type === 'video'
+        ? createLightboxVideo(media)
+        : createLightboxImage(media);
+
+    content.appendChild(mediaElement);
 }
 
 // ============================================================================
@@ -351,22 +518,6 @@ function showLanguageNotification() {
 }
 
 // ============================================================================
-// PDF DOWNLOAD TRACKING
-// ============================================================================
-
-/**
- * Track PDF downloads for analytics
- */
-function initPDFTracking() {
-    document.querySelectorAll('a[href$=".pdf"]').forEach(link => {
-        link.addEventListener('click', function() {
-            console.log('Portfolio PDF download initiated');
-            // Optional: Add analytics tracking here
-        });
-    });
-}
-
-// ============================================================================
 // COLLAPSIBLE SECTIONS
 // ============================================================================
 
@@ -385,6 +536,115 @@ function initCollapsible() {
 }
 
 // ============================================================================
+// VIDEO VOLUME NORMALIZATION
+// ============================================================================
+
+/**
+ * Normalize video volumes to compensate for different recording levels
+ */
+function initVideoVolumeNormalization() {
+    try {
+        const videos = document.querySelectorAll('.mini-gallery video');
+        debugLog(`Normalizing volume for ${videos.length} gallery videos`);
+
+        videos.forEach((video, index) => {
+            const source = video.querySelector('source');
+            if (!source) {
+                debugLog(`Video ${index} has no source element`);
+                return;
+            }
+
+            const src = source.src;
+
+            // Find matching video and set volume
+            for (const [name, volume] of Object.entries(CONFIG.VIDEO_VOLUME_LEVELS)) {
+                if (src.includes(name)) {
+                    video.volume = volume;
+                    debugLog(`Set volume for ${name} to ${volume}`);
+                    break;
+                }
+            }
+        });
+    } catch (error) {
+        logError('Video Volume Normalization', error);
+    }
+}
+
+/**
+ * Initialize custom video player controls
+ */
+function initCustomVideoPlayer() {
+    // Handle all video containers in GALLERIES ONLY (not lightbox)
+    document.querySelectorAll('.mini-gallery .video-container, .gallery-grid .video-container').forEach(container => {
+        const video = container.querySelector('video');
+        const playOverlay = container.querySelector('.video-play-overlay');
+        const mutedNotification = container.querySelector('.video-muted-notification');
+
+        if (!video || !playOverlay) return;
+
+        let mutedNotificationTimeout;
+
+        // Show muted notification
+        const showMutedNotification = () => {
+            if (!mutedNotification || !video.muted) return;
+
+            mutedNotification.classList.add('show');
+
+            // Hide after configured duration
+            clearTimeout(mutedNotificationTimeout);
+            mutedNotificationTimeout = setTimeout(() => {
+                mutedNotification.classList.remove('show');
+            }, CONFIG.NOTIFICATION_DURATION);
+        };
+
+        // Click on play overlay to play/pause (prevent lightbox)
+        playOverlay.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent lightbox from opening
+            e.preventDefault();
+
+            if (video.paused) {
+                video.play();
+                container.classList.add('playing');
+            } else {
+                video.pause();
+                container.classList.remove('playing');
+            }
+        });
+
+        // Ensure video element clicks also bubble up (unless controls are clicked)
+        video.addEventListener('click', (e) => {
+            // Let the click bubble up to open lightbox
+            // The native controls will still work
+        });
+
+        // Update play button visibility when video state changes
+        video.addEventListener('play', () => {
+            container.classList.add('playing');
+        });
+
+        // Show notification only after video actually starts playing
+        video.addEventListener('playing', () => {
+            showMutedNotification();
+        }, { once: true });
+
+        video.addEventListener('pause', () => {
+            container.classList.remove('playing');
+        });
+
+        video.addEventListener('ended', () => {
+            container.classList.remove('playing');
+        });
+
+        // Hide notification when video is unmuted
+        video.addEventListener('volumechange', () => {
+            if (!video.muted && mutedNotification) {
+                mutedNotification.classList.remove('show');
+            }
+        });
+    });
+}
+
+// ============================================================================
 // INITIALIZATION
 // ============================================================================
 
@@ -392,18 +652,25 @@ function initCollapsible() {
  * Initialize application when DOM is ready
  */
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialize all features
-    initHeaderScroll();
-    initMobileMenu();
-    initSmoothScroll();
-    initLightbox();
-    initLanguageToggle();
-    initPDFTracking();
-    initCollapsible();
+    debugLog('Initializing portfolio website...');
 
-    // Log successful initialization
-    console.log('Portfolio website initialized successfully');
-    console.log('Features: Navigation, Mobile Menu, Lightbox, Language Toggle, Collapsible');
+    try {
+        // Initialize all features
+        initHeaderScroll();
+        initMobileMenu();
+        initSmoothScroll();
+        initLightbox();
+        initLanguageToggle();
+        initCollapsible();
+        initVideoVolumeNormalization();
+        initCustomVideoPlayer();
+
+        debugLog('✓ Portfolio website initialized successfully');
+        debugLog('Features: Navigation, Mobile Menu, Lightbox, Language Toggle, Collapsible, Video Normalization, Custom Player');
+    } catch (error) {
+        logError('Initialization', error);
+        console.error('Failed to initialize portfolio. Please refresh the page.');
+    }
 });
 
 // Add CSS animations for notifications

@@ -51,3 +51,6 @@ build/
 # Archive/Old Versions (uncomment if not tracking)
 # Archive/
 # Archive - working versions/
+
+# Backup folder (all temporary and backup files)
+_backups/

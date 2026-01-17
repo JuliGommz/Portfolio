@@ -3,14 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
     <meta name="description" content="Julian Gomez - Learning Experience Designer & Creative Producer. Spielerische Lernsysteme, die komplexe Inhalte durch Erleben vermitteln.">
     <meta name="author" content="Julian Gomez">
     <meta name="keywords" content="Learning Experience Design, Game Design, Creative Production, Corporate Training, Julian Gomez">
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Julian Gomez - Learning Experience Designer">
+    <meta property="og:description" content="Spielerische Lernsysteme, die komplexe Inhalte durch Erleben vermitteln.">
+    <meta property="og:locale" content="de_DE">
+
     <title>Julian Gomez - Learning Experience Designer & Creative Producer</title>
 
-    <!-- Google Fonts -->
+    <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Fonts with display=swap for better performance -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Stylesheet -->
@@ -57,7 +73,6 @@
                 </p>
                 <div class="hero__cta">
                     <a href="#contact" class="btn btn--primary">Kontakt aufnehmen</a>
-                    <a href="/portfolio.pdf" class="btn btn--secondary" download>Portfolio PDF</a>
                 </div>
             </div>
         </div>
@@ -268,20 +283,24 @@
 
                     <h5 class="mini-gallery-title">Galerie</h5>
                     <div class="mini-gallery">
+                        <div class="gallery-item-mini" data-lightbox="journey-1">
+                            <img src="media/images/Journey-1.jpg" alt="Journey - Main scene" loading="lazy">
+                        </div>
                         <div class="gallery-item-mini" data-lightbox="journey-2">
                             <img src="media/images/Journey-2.jpg" alt="Journey - Environment design" loading="lazy">
                         </div>
                         <div class="gallery-item-mini" data-lightbox="journey-3">
                             <img src="media/images/Journey-3.jpg" alt="Journey - Gameplay scene" loading="lazy">
                         </div>
-                        <div class="gallery-item-mini" data-lightbox="journey-4">
-                            <img src="media/images/Journey-4.jpg" alt="Journey - UI and game mechanics" loading="lazy">
-                        </div>
                         <div class="gallery-item-mini video-item" data-lightbox="journey-video">
-                            <video controls preload="metadata">
-                                <source src="media/images/Level2.mp4" type="video/mp4">
-                                Your browser does not support video.
-                            </video>
+                            <div class="video-container">
+                                <video controls preload="metadata" muted>
+                                    <source src="media/images/Journey.mp4" type="video/mp4">
+                                    Your browser does not support video.
+                                </video>
+                                <div class="video-play-overlay"></div>
+                                <div class="video-muted-notification">Audio is muted</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -307,10 +326,14 @@
                             <img src="media/images/gourmet-gameplay-3.jpg" alt="Gourmet Invader - Gameplay scene 3" loading="lazy">
                         </div>
                         <div class="gallery-item-mini video-item" data-lightbox="gourmet-video">
-                            <video controls preload="metadata">
-                                <source src="media/videos/gourmet-gameplay.mp4" type="video/mp4">
-                                Your browser does not support video.
-                            </video>
+                            <div class="video-container">
+                                <video controls preload="metadata" muted>
+                                    <source src="media/images/gourmet-gameplay1.mp4" type="video/mp4">
+                                    Your browser does not support video.
+                                </video>
+                                <div class="video-play-overlay"></div>
+                                <div class="video-muted-notification">Audio is muted</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -336,17 +359,21 @@
                             <img src="media/images/Chest-4.png" alt="Chest Quest - Character and environment" loading="lazy">
                         </div>
                         <div class="gallery-item-mini video-item" data-lightbox="chest-video">
-                            <video controls preload="metadata">
-                                <source src="media/images/Chest.mp4" type="video/mp4">
-                                Your browser does not support video.
-                            </video>
+                            <div class="video-container">
+                                <video controls preload="metadata" muted>
+                                    <source src="media/images/Chest.mp4" type="video/mp4">
+                                    Your browser does not support video.
+                                </video>
+                                <div class="video-play-overlay"></div>
+                                <div class="video-muted-notification">Audio is muted</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="project-mini">
                     <h4 class="project-mini__title">Animation Design | <strong>Showroom TANGO</strong> | After Effects | Solo | 2026</h4>
-                    <img src="media/images/tango-thumbnail.jpg" alt="Showroom TANGO animation thumbnail" class="project-mini-thumb">
+                    <img src="media/images/Tango-thumbnail.png" alt="Showroom TANGO animation thumbnail" class="project-mini-thumb">
                     <p><strong><em>18 Sekunden Neon-Typografie, Prisma-Effekte und Bullet-Hell-Explosion im 80er-Retrofuturismus-Stil.</em></strong></p>
                     <p></p>
                     <p>Titelanimation für Unity Multiplayer-Spiel "Showroom Tango" mit Fokus auf Motion Design und visuelle Atmosphäre. Adobe After Effects als Tool.</p>
@@ -365,10 +392,14 @@
                             <img src="media/images/Tango-3.png" alt="Showroom TANGO - Bullet hell explosion" loading="lazy">
                         </div>
                         <div class="gallery-item-mini video-item" data-lightbox="tango-video">
-                            <video controls preload="metadata">
-                                <source src="media/images/Tango_Animation.mp4" type="video/mp4">
-                                Your browser does not support video.
-                            </video>
+                            <div class="video-container">
+                                <video controls preload="metadata" muted>
+                                    <source src="media/images/Tango_Animation_short.mp4" type="video/mp4">
+                                    Your browser does not support video.
+                                </video>
+                                <div class="video-play-overlay"></div>
+                                <div class="video-muted-notification">Audio is muted</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -438,12 +469,11 @@
                         <p><strong>Telefon:</strong><br><a href="tel:+4917622057364">+49 176 22057364</a></p>
                     </div>
                     <div class="contact-details-right">
-                        <p><strong>LinkedIn:</strong><br><a href="https://linkedin.com/in/julian-gomez-hd" target="_blank">linkedin.com/in/julian-gomez-hd</a></p>
-                        <p><strong>GitHub:</strong><br><a href="https://github.com/JuliGommz" target="_blank">github.com/JuliGommz</a></p>
+                        <p><strong>LinkedIn:</strong><br><a href="https://linkedin.com/in/julian-gomez-hd" target="_blank" rel="noopener noreferrer">linkedin.com/in/julian-gomez-hd</a></p>
+                        <p><strong>GitHub:</strong><br><a href="https://github.com/JuliGommz" target="_blank" rel="noopener noreferrer">github.com/JuliGommz</a></p>
                     </div>
                     <div class="contact-cta">
                         <a href="mailto:juliangomez@gmx.de" class="btn btn--primary">Nachricht senden</a>
-                        <a href="/portfolio.pdf" class="btn btn--secondary" download>Portfolio PDF herunterladen</a>
                     </div>
                 </div>
             </div>

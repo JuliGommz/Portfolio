@@ -1050,11 +1050,24 @@ html {
 }
 
 .gallery-item-mini.video-item {
-  cursor: default;
+  cursor: pointer;
+  position: relative;
 }
 
 .gallery-item-mini.video-item:hover {
-  transform: none;
+  transform: scale(1.05);
+}
+
+.gallery-item-mini.video-item .video-container {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.gallery-item-mini.video-item .video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* Clearfix for floated elements */
@@ -1261,3 +1274,145 @@ html {
   min-width: 180px;
   justify-content: center;
 }
+
+/* ============================================================================
+   CUSTOM VIDEO PLAYER ENHANCEMENTS
+   ============================================================================ */
+
+/* Video container with play button overlay */
+.video-container {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.video-container video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+/* Custom play button overlay */
+.video-play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+.video-play-overlay::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12px 0 12px 20px;
+  border-color: transparent transparent transparent var(--accent-primary);
+  margin-left: 4px;
+}
+
+.video-container:hover .video-play-overlay {
+  background: rgba(255, 255, 255, 1);
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.video-container.playing .video-play-overlay {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Muted notification overlay */
+.video-muted-notification {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 8.64px 14.4px;
+  border-radius: 5.76px;
+  font-size: 10.08px;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  gap: 5.76px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.video-muted-notification::before {
+  content: '🔇';
+  font-size: 11.52px;
+}
+
+.video-muted-notification.show {
+  opacity: 1;
+}
+
+/* Lightbox video notification - larger size */
+#lightbox-content .video-muted-notification {
+  padding: 28.8px 48px;
+  border-radius: 19.2px;
+  font-size: 33.6px;
+  gap: 19.2px;
+}
+
+#lightbox-content .video-muted-notification::before {
+  font-size: 38.4px;
+}
+
+/* Enhanced video controls styling - Modern & Larger */
+.video-container video::-webkit-media-controls-panel {
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0.8) 100%);
+  height: 50px;
+}
+
+.video-container video::-webkit-media-controls-timeline {
+  height: 6px;
+  background: var(--accent-primary);
+  border-radius: 3px;
+}
+
+.video-container video::-webkit-media-controls-current-time-display,
+.video-container video::-webkit-media-controls-time-remaining-display {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.video-container video::-webkit-media-controls-play-button,
+.video-container video::-webkit-media-controls-mute-button,
+.video-container video::-webkit-media-controls-fullscreen-button {
+  transform: scale(1.2);
+}
+
+/* Lightbox video specific */
+#lightbox-content .video-container {
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+#lightbox-content .video-container video {
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+/* Gallery video items already styled above (lines 1052-1071) */
