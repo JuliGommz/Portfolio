@@ -20,7 +20,7 @@
   --shadow-md: 0 4px 8px rgba(43, 38, 33, 0.08);
   --shadow-lg: 0 8px 16px rgba(43, 38, 33, 0.10);
   --shadow-xl: 0 12px 24px rgba(43, 38, 33, 0.12);
-  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-serif: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-sans: 'Inter', Arial, sans-serif;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -324,6 +324,11 @@ button { cursor: pointer; background: none; border: none; font: inherit; }
   margin-bottom: var(--space-6);
 }
 
+.featured-project__description {
+  margin-bottom: var(--space-8);
+  line-height: 1.75;
+}
+
 /* Gallery Title */
 .gallery-title {
   font-size: 1.5rem;
@@ -344,6 +349,61 @@ button { cursor: pointer; background: none; border: none; font: inherit; }
 /* Project Gallery Section */
 .project-gallery {
   margin-top: var(--space-8);
+}
+
+/* Gallery collapsible (mobile only) */
+.project-gallery.collapsible .toggle-icon {
+  display: inline;
+}
+
+.project-gallery.collapsible .gallery-title {
+  cursor: pointer;
+  user-select: none;
+}
+
+@media (max-width: 767px) {
+  .project-gallery.collapsible .collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+  }
+
+  .project-gallery.collapsible.active .collapsible-content {
+    max-height: 3000px;
+  }
+}
+
+@media (min-width: 768px) {
+  .project-gallery.collapsible .toggle-icon {
+    display: none;
+  }
+
+  .project-gallery.collapsible .gallery-title {
+    cursor: default;
+  }
+
+  .project-gallery.collapsible .collapsible-content {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+.project-cta-group {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0.85;
+}
+
+.project-cta-group .btn {
+  font-size: 0.9375rem;
+  padding: var(--space-3) var(--space-6);
+}
+
+.project-cta-group .btn--secondary:hover {
+  opacity: 1;
 }
 
 .project-header {
@@ -443,6 +503,28 @@ button { cursor: pointer; background: none; border: none; font: inherit; }
   line-height: 1.75;
 }
 
+.testimonial-placeholder {
+  margin-top: var(--space-8);
+  padding: var(--space-6) 0;
+  border-left: 3px solid var(--accent-primary);
+  padding-left: var(--space-6);
+  font-style: italic;
+}
+
+.testimonial-placeholder p {
+  margin-bottom: var(--space-2);
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+}
+
+.testimonial-placeholder cite {
+  display: block;
+  font-style: normal;
+  color: var(--text-tertiary);
+  font-size: 0.9375rem;
+  margin-top: var(--space-3);
+}
+
 /* Collapsible Sections */
 .collapsible {
   border-bottom: 1px solid var(--bg-secondary);
@@ -464,8 +546,14 @@ button { cursor: pointer; background: none; border: none; font: inherit; }
 
 .toggle-icon {
   transition: transform var(--transition-base);
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   margin-left: var(--space-2);
+  opacity: 0.6;
+  font-weight: 300;
+}
+
+.collapsible-header:hover .toggle-icon {
+  opacity: 0.9;
 }
 
 .collapsible.active .toggle-icon {

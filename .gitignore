@@ -21,6 +21,12 @@ desktop.ini
 *.bak
 *.tmp
 *.backup
+*.html.backup
+*.css.backup
+*.js.backup
+
+# Temporary Claude Files
+tmpclaude-*
 
 # Log Files
 *.log
@@ -41,3 +47,7 @@ dist/
 build/
 *.min.js
 *.min.css
+
+# Archive/Old Versions (uncomment if not tracking)
+# Archive/
+# Archive - working versions/
