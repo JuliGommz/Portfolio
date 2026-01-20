@@ -4,14 +4,12 @@
  *
  * Features:
  * - Responsive Navigation with Mobile Menu
- * - Image & Video Lightbox Gallery
+ * - Image & Vimeo Video Lightbox Gallery
  * - Smooth Scroll Navigation
  * - Language Toggle (Placeholder)
- * - Custom Video Player Controls
- * - Volume Normalization
  * - Collapsible Sections
  *
- * @version 2.0.0
+ * @version 3.0.0
  * @author Julian Gomez
  */
 
@@ -24,12 +22,7 @@
 const CONFIG = {
     DEBUG_MODE: false, // Set to false for production
     SCROLL_THROTTLE: 100, // ms
-    NOTIFICATION_DURATION: 2100, // ms
-    VIDEO_VOLUME_LEVELS: {
-        'Tango': 0.3,
-        'Chest': 0.75,
-        'gourmet-gameplay': 1.0
-    }
+    NOTIFICATION_DURATION: 2100 // ms
 };
 
 /**
@@ -201,14 +194,14 @@ function initLightbox() {
     const galleryContainers = document.querySelectorAll('.gallery-grid, .mini-gallery');
 
     galleryContainers.forEach(container => {
-        // Get all gallery items within this container (including videos)
+        // Get all gallery items within this container (images and Vimeo embeds)
         const galleryItems = Array.from(container.querySelectorAll('[data-lightbox]'));
 
-        // Create media array for this gallery (images and videos)
+        // Create media array for this gallery (images and Vimeo videos)
         const galleryMedia = galleryItems
             .map(item => {
                 const img = item.querySelector('img');
-                const video = item.querySelector('video source');
+                const vimeoIframe = item.querySelector('iframe[src*="vimeo.com"]');
 
                 if (img) {
                     return {
@@ -216,11 +209,11 @@ function initLightbox() {
                         src: img.src,
                         alt: img.alt || ''
                     };
-                } else if (video) {
+                } else if (vimeoIframe) {
                     return {
-                        type: 'video',
-                        src: video.src,
-                        alt: 'Video'
+                        type: 'vimeo',
+                        src: vimeoIframe.src,
+                        alt: vimeoIframe.title || 'Video'
                     };
                 }
                 return null;
@@ -293,72 +286,25 @@ function initLightbox() {
 }
 
 /**
- * Create video element for lightbox
- * @param {Object} media - Media object with src and type
- * @returns {HTMLElement} Video container element
+ * Create Vimeo iframe element for lightbox
+ * @param {Object} media - Media object with src (Vimeo iframe URL)
+ * @returns {HTMLElement} Vimeo container element
  */
-function createLightboxVideo(media) {
-    // Create container
+function createLightboxVimeo(media) {
+    // Create responsive container for Vimeo
     const container = document.createElement('div');
-    container.className = 'video-container playing';
+    container.style.cssText = 'padding:56.25% 0 0 0;position:relative;max-width:90vw;max-height:90vh;';
 
-    // Create video element
-    const video = document.createElement('video');
-    video.controls = true;
-    video.autoplay = true;
-    video.muted = true;
-    video.style.cssText = 'max-width: 90vw; max-height: 90vh;';
+    // Create iframe
+    const iframe = document.createElement('iframe');
+    iframe.src = media.src;
+    iframe.frameBorder = '0';
+    iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
+    iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+    iframe.title = media.alt || 'Video';
 
-    // Create source element
-    const source = document.createElement('source');
-    source.src = media.src;
-    source.type = 'video/mp4';
-
-    // Add fallback text
-    const fallback = document.createTextNode('Your browser does not support video playback.');
-    video.appendChild(source);
-    video.appendChild(fallback);
-
-    // Create notification (hidden initially)
-    const notification = document.createElement('div');
-    notification.className = 'video-muted-notification';
-    notification.textContent = 'Audio is muted';
-
-    // Assemble container
-    container.appendChild(video);
-    container.appendChild(notification);
-
-    // Apply volume normalization
-    for (const [name, volume] of Object.entries(CONFIG.VIDEO_VOLUME_LEVELS)) {
-        if (media.src.includes(name)) {
-            video.volume = volume;
-            debugLog(`Set video volume for ${name} to ${volume}`);
-            break;
-        }
-    }
-
-    // Show notification only after video starts playing
-    video.addEventListener('playing', () => {
-        if (video.muted) {
-            // Add small delay to ensure video has rendered
-            setTimeout(() => {
-                notification.classList.add('show');
-
-                // Hide notification after configured duration
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, CONFIG.NOTIFICATION_DURATION);
-            }, 150); // 150ms delay for smooth appearance
-        }
-    }, { once: true }); // Only trigger once
-
-    // Hide notification when unmuted
-    video.addEventListener('volumechange', () => {
-        if (!video.muted) {
-            notification.classList.remove('show');
-        }
-    });
-
+    container.appendChild(iframe);
     return container;
 }
 
@@ -375,7 +321,7 @@ function createLightboxImage(media) {
 }
 
 /**
- * Open lightbox with specific media (image or video)
+ * Open lightbox with specific media (image or Vimeo video)
  */
 function openLightbox(index) {
     state.currentImageIndex = index;
@@ -392,9 +338,12 @@ function openLightbox(index) {
     const media = state.lightboxImages[index];
 
     // Create and append appropriate media element
-    const mediaElement = media.type === 'video'
-        ? createLightboxVideo(media)
-        : createLightboxImage(media);
+    let mediaElement;
+    if (media.type === 'vimeo') {
+        mediaElement = createLightboxVimeo(media);
+    } else {
+        mediaElement = createLightboxImage(media);
+    }
 
     content.appendChild(mediaElement);
 
@@ -409,14 +358,10 @@ function closeLightbox() {
     const lightbox = document.getElementById('lightbox');
     if (!lightbox) return;
 
-    // Stop any playing videos
+    // Clear content (this will remove any Vimeo iframes)
     const content = document.getElementById('lightbox-content');
     if (content) {
-        const video = content.querySelector('video');
-        if (video) {
-            video.pause();
-            video.currentTime = 0;
-        }
+        content.innerHTML = '';
     }
 
     lightbox.classList.remove('active');
@@ -441,7 +386,7 @@ function showPreviousImage() {
 }
 
 /**
- * Update lightbox image or video
+ * Update lightbox image or Vimeo video
  */
 function updateLightboxImage() {
     const content = document.getElementById('lightbox-content');
@@ -453,9 +398,12 @@ function updateLightboxImage() {
     const media = state.lightboxImages[state.currentImageIndex];
 
     // Create and append appropriate media element
-    const mediaElement = media.type === 'video'
-        ? createLightboxVideo(media)
-        : createLightboxImage(media);
+    let mediaElement;
+    if (media.type === 'vimeo') {
+        mediaElement = createLightboxVimeo(media);
+    } else {
+        mediaElement = createLightboxImage(media);
+    }
 
     content.appendChild(mediaElement);
 }
@@ -506,7 +454,7 @@ function showLanguageNotification() {
         animation: slideIn 0.3s ease;
     `;
     notification.textContent = state.currentLang === 'en'
-        ? 'English version coming soon!'
+        ? 'English version active'
         : 'Deutsche Version aktiv';
 
     document.body.appendChild(notification);
@@ -536,113 +484,12 @@ function initCollapsible() {
 }
 
 // ============================================================================
-// VIDEO VOLUME NORMALIZATION
+// VIMEO VIDEO INTEGRATION
 // ============================================================================
 
-/**
- * Normalize video volumes to compensate for different recording levels
- */
-function initVideoVolumeNormalization() {
-    try {
-        const videos = document.querySelectorAll('.mini-gallery video');
-        debugLog(`Normalizing volume for ${videos.length} gallery videos`);
-
-        videos.forEach((video, index) => {
-            const source = video.querySelector('source');
-            if (!source) {
-                debugLog(`Video ${index} has no source element`);
-                return;
-            }
-
-            const src = source.src;
-
-            // Find matching video and set volume
-            for (const [name, volume] of Object.entries(CONFIG.VIDEO_VOLUME_LEVELS)) {
-                if (src.includes(name)) {
-                    video.volume = volume;
-                    debugLog(`Set volume for ${name} to ${volume}`);
-                    break;
-                }
-            }
-        });
-    } catch (error) {
-        logError('Video Volume Normalization', error);
-    }
-}
-
-/**
- * Initialize custom video player controls
- */
-function initCustomVideoPlayer() {
-    // Handle all video containers in GALLERIES ONLY (not lightbox)
-    document.querySelectorAll('.mini-gallery .video-container, .gallery-grid .video-container').forEach(container => {
-        const video = container.querySelector('video');
-        const playOverlay = container.querySelector('.video-play-overlay');
-        const mutedNotification = container.querySelector('.video-muted-notification');
-
-        if (!video || !playOverlay) return;
-
-        let mutedNotificationTimeout;
-
-        // Show muted notification
-        const showMutedNotification = () => {
-            if (!mutedNotification || !video.muted) return;
-
-            mutedNotification.classList.add('show');
-
-            // Hide after configured duration
-            clearTimeout(mutedNotificationTimeout);
-            mutedNotificationTimeout = setTimeout(() => {
-                mutedNotification.classList.remove('show');
-            }, CONFIG.NOTIFICATION_DURATION);
-        };
-
-        // Click on play overlay to play/pause (prevent lightbox)
-        playOverlay.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent lightbox from opening
-            e.preventDefault();
-
-            if (video.paused) {
-                video.play();
-                container.classList.add('playing');
-            } else {
-                video.pause();
-                container.classList.remove('playing');
-            }
-        });
-
-        // Ensure video element clicks also bubble up (unless controls are clicked)
-        video.addEventListener('click', (e) => {
-            // Let the click bubble up to open lightbox
-            // The native controls will still work
-        });
-
-        // Update play button visibility when video state changes
-        video.addEventListener('play', () => {
-            container.classList.add('playing');
-        });
-
-        // Show notification only after video actually starts playing
-        video.addEventListener('playing', () => {
-            showMutedNotification();
-        }, { once: true });
-
-        video.addEventListener('pause', () => {
-            container.classList.remove('playing');
-        });
-
-        video.addEventListener('ended', () => {
-            container.classList.remove('playing');
-        });
-
-        // Hide notification when video is unmuted
-        video.addEventListener('volumechange', () => {
-            if (!video.muted && mutedNotification) {
-                mutedNotification.classList.remove('show');
-            }
-        });
-    });
-}
+// Vimeo videos are embedded as iframes with autoplay/muted settings.
+// No custom player controls needed - Vimeo provides built-in controls.
+// Videos load on-demand through Vimeo's CDN for optimal performance.
 
 // ============================================================================
 // INITIALIZATION
@@ -662,11 +509,9 @@ document.addEventListener('DOMContentLoaded', function () {
         initLightbox();
         initLanguageToggle();
         initCollapsible();
-        initVideoVolumeNormalization();
-        initCustomVideoPlayer();
 
         debugLog('✓ Portfolio website initialized successfully');
-        debugLog('Features: Navigation, Mobile Menu, Lightbox, Language Toggle, Collapsible, Video Normalization, Custom Player');
+        debugLog('Features: Navigation, Mobile Menu, Lightbox, Language Toggle, Collapsible, Vimeo Videos');
     } catch (error) {
         logError('Initialization', error);
         console.error('Failed to initialize portfolio. Please refresh the page.');
