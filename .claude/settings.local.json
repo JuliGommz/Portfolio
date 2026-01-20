@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(net stop Apache2.4)",
+      "Bash(net start Apache2.4)",
+      "Bash(dir:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Julian Gomez - Game & Multimedia Design Portfolio. Prototyping-Spezialist für lernbasierte Experience-Systeme mit Fokus auf Gamification und Narrative Design.">
+    <meta name="author" content="Julian Gomez">
+    <meta name="keywords" content="Game Design, Gamification, Learning Design, Experience Design, Portfolio, Julian Gomez">
+    <title>Julian Gomez - Portfolio</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+
+<body>
+
+    <section class="section section--hero">
+        <div class="container">
+            <div class="hero">
+                <h1 class="hero__title">Julian Gomez</h1>
+                <p class="hero__subtitle">Game Design meets Design Thinking</p>
+                <p class="hero__tagline">Prototyping-Spezialist für lernbasierte Erfahrungssysteme</p>
+                <div class="hero__cta">
+                    <a href="#projects" class="btn btn--primary">Projekte erkunden</a>
+                    <a href="#contact" class="btn btn--secondary">Kontakt aufnehmen</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section__header">
+                <h2 class="section__title">Was ich mache</h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>Was</h3>
+                    <p>Von Corporate Learning Games bis zu KI-gestützten Prototypen – ich unterstütze mit Erfahrungs-basierte Systeme, die messbare Verhaltensänderung ermöglichen.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Wie</h3>
+                    <p>Durch systematisches Design Thinking und Game-Mechaniken (Gamification) helfe ich Lösungen entwickeln, die komplexe Lerninhalte erlebbar und dadurch wirkungsvoller machen.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Warum</h3>
+                    <p>Wirkungsvolle Transformation geschieht nicht allein durch Theorie, sondern durch erfahren. Gamification schafft sichere und atraktive Räume für Lernprozesse am Arbeitsplatz.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section--tinted">
+        <div class="container">
+            <div class="section__header">
+                <h2 class="section__title">Kompetenzbereiche</h2>
+                <p class="section__subtitle">Drei Kompetenzbereiche, die sich in jedem Projekt anders manifestieren</p>
+            </div>
+
+            <div class="filter-bar">
+                <button class="filter-btn is-active" onclick="filterProjects('all', this)">Alle Projekte</button>
+
+                <button class="filter-btn filter-btn--human" onclick="filterProjects('human', this)">
+                    <span class="pillar-dot pillar-dot--human"></span> Human-Centered Design
+                </button>
+
+                <button class="filter-btn filter-btn--learning" onclick="filterProjects('learning', this)">
+                    <span class="pillar-dot pillar-dot--learning"></span> Learning & Development
+                </button>
+
+                <button class="filter-btn filter-btn--ai" onclick="filterProjects('ai', this)">
+                    <span class="pillar-dot pillar-dot--ai"></span> AI-Assisted Prototyping
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="projects">
+        <div class="container">
+            <div class="section__header">
+                <h2 class="section__title">Portfolio Projekte</h2>
+                <p class="section__subtitle">Impact-First: Projekte sortiert nach Portfolio-Relevanz und Kompetenz-Demonstration</p>
+            </div>
+
+            <article class="featured-project" data-pillars="human learning">
+                <div class="featured-project__content">
+                    <div class="featured-project__text">
+                        <span class="card__tag">Featured: Corporate Games</span>
+                        <div class="pillar-dots">
+                            <span class="pillar-dot pillar-dot--human"></span>
+                            <span class="pillar-dot pillar-dot--learning"></span>
+                            <span class="pillar-dot"></span>
+                        </div>
+                        <h2 class="featured-project__title">mind.set.play</h2>
+                        <p class="featured-project__subtitle">Corporate Culture Transformation Game</p>
+                        <p class="featured-project__description">
+                            6-monatiges Flaggschiff-Projekt: Board Game für VORSPRUNGatwork mit Role-Switching und VUCA-Simulation.
+                            Macht New Work-Prinzipien erlebbar und erzielt messbare Team-Dynamik-Verbesserung.
+                        </p>
+                        <div class="featured-project__meta">
+                            <span>2019</span><span>•</span><span>6 Monate</span><span>•</span><span>Solo + 1 Assistant</span>
+                        </div>
+                        <button class="btn btn--primary" onclick="openModal('mindsetplay')">Projekt erkunden →</button>
+                    </div>
+                    <div class="featured-project__image">
+                        <img src="media/images/mindsetplay-thumbnail.jpg" alt="mind.set.play thumbnail" class="featured-thumbnail">
+                    </div>
+
+                </div>
+            </article>
+
+            <div class="project-grid">
+
+                <!-- PROJECT 1: Chest-Quest -->
+                <article class="card card--ai" data-pillars="ai">
+                    <div class="card__image">
+                        <img src="media/images/chest-thumbnail.jpg" alt="Chest-Quest thumbnail" class="card__thumbnail">
+                    </div>
+                    <div class="card__body">
+                        <span class="card__tag">Video-Games Solo</span>
+                        <div class="pillar-dots">
+                            <span class="pillar-dot"></span>
+                            <span class="pillar-dot"></span>
+                            <span class="pillar-dot pillar-dot--ai"></span>
+                        </div>
+                        <h3 class="card__title">Chest-Quest</h3>
+                        <p class="card__description">Transparente AI-Collaboration mit Provenance Tracking</p>
+                        <div class="card__meta">
+                            <span>2025</span><span>•</span><span>6 Wochen</span>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn--ghost" onclick="openModal('chest')">Details →</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- PROJECT 2: Gourmet Invader -->
+                <article class="card card--learning" data-pillars="learning">
+                    <div class="card__image">
+                        <img src="media/images/gourmet-thumbnail.jpg" alt="Gourmet Invader thumbnail" class="card__thumbnail">
+                    </div>
+                    <div class="card__body">
+                        <span class="card__tag">Video-Games Team</span>
+                        <div class="pillar-dots">
+                            <span class="pillar-dot"></span>
+                            <span class="pillar-dot pillar-dot--learning"></span>
+                            <span class="pillar-dot"></span>
+                        </div>
+                        <h3 class="card__title">Gourmet Invader</h3>
+                        <p class="card__description">Agile Team Leadership: Gamifizierte Check-ins für 4-Personen JavaScript-Team</p>
+                        <div class="card__meta">
+                            <span>2025</span><span>•</span><span>4 Wochen</span>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn--ghost" onclick="openModal('gourmet')">Details →</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- PROJECT 3: Journey -->
+                <article class="card card--human" data-pillars="human">
+                    <div class="card__image">
+                        <img src="media/images/journey-thumbnail.jpg" alt="Journey thumbnail" class="card__thumbnail">
+                    </div>
+                    <div class="card__body">
+                        <span class="card__tag">Video-Games Solo</span>
+                        <div class="pillar-dots">
+                            <span class="pillar-dot pillar-dot--human"></span>
+                            <span class="pillar-dot"></span>
+                            <span class="pillar-dot"></span>
+                        </div>
+                        <h3 class="card__title">Journey</h3>
+                        <p class="card__description">UX Quests Methodik für narrative-driven Problem-Solving</p>
+                        <div class="card__meta">
+                            <span>2025</span><span>•</span><span>4-6 Wochen</span>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn--ghost" onclick="openModal('journey')">Details →</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- PROJECT 4: Exo Hazard -->
+                <article class="card card--learning" data-pillars="learning">
+                    <div class="card__image">
+                        <img src="media/images/exo-thumbnail.jpg" alt="Exo Hazard thumbnail" class="card__thumbnail">
+                    </div>
+                    <div class="card__body">
+                        <span class="card__tag">Video-Games Team</span>
+                        <div class="pillar-dots">
+                            <span class="pillar-dot"></span>
+                            <span class="pillar-dot pillar-dot--learning"></span>
+                            <span class="pillar-dot"></span>
+                        </div>
+                        <h3 class="card__title">Exo Hazard</h3>
+                        <p class="card__description">Multi-Genre Unity Architektur (7-Personen Team, 10-Tage Phase)</p>
+                        <div class="card__meta">
+                            <span>2025</span><span>•</span><span>10 Tage</span>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn--ghost" onclick="openModal('exo')">Details →</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- PROJECT 5: Void Protocol -->
+                <article class="card card--learning" data-pillars="learning">
+                    <div class="card__image">
+                        <img src="media/images/void-thumbnail.jpg" alt="Void Protocol thumbnail" class="card__thumbnail">
+                    </div>
+                    <div class="card__body">
+                        <span class="card__tag">Video-Games Team</span>
+                        <div class="pillar-dots">
+                            <span class="pillar-dot"></span>
+                            <span class="pillar-dot pillar-dot--learning"></span>
+                            <span class="pillar-dot"></span>
+                        </div>
+                        <h3 class="card__title">Void Protocol</h3>
+                        <p class="card__description">Crisis-Intervention PM mit Dual-Role Execution (PM + Programmer)</p>
+                        <div class="card__meta">
+                            <span>2025</span><span>•</span><span>6 Wochen</span>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn--ghost" onclick="openModal('void')">Details →</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- PROJECT 6: Learning Tools -->
+                <article class="card card--ai" data-pillars="human learning ai">
+                    <div class="card__image">
+                        <img src="media/images/aitools-thumbnail.jpg" alt="Learning Tools thumbnail" class="card__thumbnail">
+                    </div>
+                    <div class="card__body">
+                        <span class="card__tag">AI-Based Learning</span>
+                        <div class="pillar-dots">
+                            <span class="pillar-dot pillar-dot--human"></span>
+                            <span class="pillar-dot pillar-dot--learning"></span>
+                            <span class="pillar-dot pillar-dot--ai"></span>
+                        </div>
+                        <h3 class="card__title">Learning Tools (experimental)</h3>
+                        <p class="card__description">Three-Tool Suite für Corporate Training (JS GPT + C# + RPG Lab)</p>
+                        <div class="card__meta">
+                            <span>2025</span><span>•</span><span>Ongoing</span>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn--ghost" onclick="openModal('aitools')">Details →</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- PROJECT 7: This Website -->
+                <article class="card card--ai" data-pillars="ai">
+                    <div class="card__image">
+                        <img src="media/images/website-thumbnail.jpg" alt="This Website thumbnail" class="card__thumbnail">
+                    </div>
+                    <div class="card__body">
+                        <span class="card__tag">Meta-Documentation</span>
+                        <div class="pillar-dots">
+                            <span class="pillar-dot"></span>
+                            <span class="pillar-dot"></span>
+                            <span class="pillar-dot pillar-dot--ai"></span>
+                        </div>
+                        <h3 class="card__title">This Website</h3>
+                        <p class="card__description">Portfolio als Methodology Proof mit transparentem AI-Workflow</p>
+                        <div class="card__meta">
+                            <span>2025</span><span>•</span><span>Ongoing</span>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn--ghost" onclick="openModal('website')">Details →</button>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section section--tinted" id="contact">
+        <div class="container">
+            <div class="section__header">
+                <h2 class="section__title">Kontakt</h2>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Bereit für Ihr Projekt?</h3>
+                    <p>Ich suche ein 12-wöchiges Pflichtpraktikum (Mai-Juli 2026) im Bereich Learning Systems, Gamification oder Experience Design.</p>
+                    <div class="contact-details">
+                        <p><strong>Email:</strong><br><a href="/cdn-cgi/l/email-protection#9af3f4eeffe8f4e9f2f3eadaf0eff6f3fbf4fdf5f7ffe0b4feff"><span class="__cf_email__" data-cfemail="375e5943524559445f5e47775d425b5e565950585a524d195352">[email&#160;protected]</span></a></p>
+                        <p><strong>Telefon:</strong><br><a href="tel:+4917622057364">+49 176 22057364</a></p>
+                        <p><strong>LinkedIn:</strong><br><a href="https://linkedin.com/in/julian-gomez-hd" target="_blank">linkedin.com/in/julian-gomez-hd</a></p>
+                        <p><strong>GitHub:</strong><br><a href="https://github.com/JuliGommz" target="_blank">github.com/JuliGommz</a></p>
+                    </div>
+                </div>
+                <div class="contact-cta">
+                    <a href="#" class="btn btn--primary">Portfolio PDF herunterladen</a>
+                    <a href="/cdn-cgi/l/email-protection#c2abacb6a7b0acb1aaabb282a8b7aeaba3aca5adafa7b8eca6a7" class="btn btn--secondary">Nachricht senden</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECT MODAL -->
+    <div id="projectModal" class="modal">
+        <div class="modal__container">
+            <div id="modalContent" class="modal__content">
+                <!-- Content injected by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="lightbox">
+        <button id="lightbox-prev" class="lightbox-arrow lightbox-arrow--left">&#10094;</button>
+        <div id="lightbox-content"></div>
+        <button id="lightbox-next" class="lightbox-arrow lightbox-arrow--right">&#10095;</button>
+        <button id="lightbox-close" class="lightbox-close">&times;</button>
+    </div>
+
+    <!-- Main JavaScript -->
+    <script src="js/main.js"></script>
+
+</body>
+</html>
