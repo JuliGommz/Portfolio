@@ -291,9 +291,23 @@ function initLightbox() {
  * @returns {HTMLElement} Vimeo container element
  */
 function createLightboxVimeo(media) {
-    // Create responsive container for Vimeo
+    // Create responsive container for Vimeo in lightbox
     const container = document.createElement('div');
-    container.style.cssText = 'padding:56.25% 0 0 0;position:relative;max-width:90vw;max-height:90vh;';
+
+    // Calculate dimensions: 16:9 aspect ratio, max 90% of viewport
+    const maxWidth = window.innerWidth * 0.9;
+    const maxHeight = window.innerHeight * 0.9;
+
+    // Calculate actual dimensions maintaining 16:9 aspect ratio
+    let width = maxWidth;
+    let height = width / (16/9);
+
+    if (height > maxHeight) {
+        height = maxHeight;
+        width = height * (16/9);
+    }
+
+    container.style.cssText = `position:relative;width:${width}px;height:${height}px;`;
 
     // Create iframe
     const iframe = document.createElement('iframe');
