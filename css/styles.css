@@ -595,8 +595,7 @@ button {
   line-height: 1.75;
 }
 
-.testimonial-placeholder {
-  display: none; /* Hidden until real testimonial is available */
+.testimonial {
   margin-top: var(--space-8);
   padding: var(--space-6) 0;
   border-inline-start: 3px solid var(--accent-primary);
@@ -604,13 +603,14 @@ button {
   font-style: italic;
 }
 
-.testimonial-placeholder p {
+.testimonial p {
   margin-bottom: var(--space-2);
   color: var(--text-secondary);
   letter-spacing: 0.05em;
+  line-height: 1.7;
 }
 
-.testimonial-placeholder cite {
+.testimonial cite {
   display: block;
   font-style: normal;
   color: var(--text-tertiary);
