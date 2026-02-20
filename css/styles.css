@@ -303,12 +303,26 @@ button {
    PROJECT SECTIONS
    ============================================================================ */
 
+/* Featured Projects Grid (side-by-side on desktop) */
+.featured-projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  margin-bottom: var(--space-12);
+}
+
+@media (min-width: 1024px) {
+  .featured-projects-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
 /* Featured Projects */
 .featured-project {
   background: var(--bg-elevated);
   border-radius: var(--radius-lg);
-  padding: var(--space-8);
-  margin-bottom: var(--space-12);
+  padding: var(--space-6);
   box-shadow: var(--shadow-md);
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
@@ -318,55 +332,65 @@ button {
   box-shadow: var(--shadow-lg);
 }
 
-.featured-project:last-child {
+/* Standalone featured projects (outside grid) keep bottom margin */
+.container > .featured-project {
+  margin-bottom: var(--space-12);
+}
+
+.container > .featured-project:last-child {
   margin-bottom: 0;
+}
+
+/* Featured Project Header (title+subtitle left, image right) */
+.featured-project__header {
+  display: flex;
+  align-items: start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.featured-project__heading {
+  flex: 1;
+  min-width: 0;
+  order: -1;
+}
+
+.featured-project__heading .featured-project__subtitle {
+  margin-bottom: 0;
+}
+
+.featured-project__image {
+  flex-shrink: 0;
+}
+
+.featured-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--bg-secondary);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Featured Project Content Layout */
 .featured-project__content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-6);
-  margin-bottom: var(--space-8);
-}
-
-@media (min-width: 768px) {
-  .featured-project__content {
-    grid-template-columns: 2fr 1fr;
-    gap: var(--space-8);
-  }
+  margin-bottom: var(--space-4);
 }
 
 .featured-project__text {
-  /* Text column on the left */
-}
-
-.featured-project__image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.featured-thumbnail {
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius-md);
-  border: 2px solid var(--bg-secondary);
-  box-shadow: var(--shadow-sm);
-  position: sticky;
-  top: 80px;
+  /* Text column */
 }
 
 /* Featured Project Title */
 .featured-project__title {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   margin-bottom: var(--space-2);
   color: var(--accent-primary);
 }
 
 @media (min-width: 768px) {
   .featured-project__title {
-    font-size: 2rem;
+    font-size: 1.625rem;
   }
 }
 
@@ -377,35 +401,48 @@ button {
 
 .project-meta-inline {
   font-weight: 400;
+  font-size: 0.8em;
   font-family: var(--font-sans);
 }
 
 .featured-project__subtitle {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   font-style: italic;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
 }
 
 .featured-project__description {
-  margin-bottom: var(--space-8);
-  line-height: 1.75;
+  margin-bottom: var(--space-4);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.project-goals {
+  margin: 0;
+  padding-left: 1.25em;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.project-goals li {
+  margin-bottom: var(--space-2);
+}
+
+.project-goals li:last-child {
+  margin-bottom: 0;
 }
 
 /* Gallery Title */
 .gallery-title {
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   color: var(--text-primary);
-  margin-top: var(--space-8);
-  margin-bottom: var(--space-4);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-3);
   font-family: var(--font-sans);
   text-transform: none;
-}
-
-@media (min-width: 768px) {
-  .gallery-title {
-    font-size: 1.75rem;
-  }
 }
 
 /* Project Gallery Section */
@@ -494,10 +531,58 @@ button {
   }
 }
 
+/* Inside side-by-side grid: keep gallery/testimonial collapsible on all viewports */
+@media (min-width: 1024px) {
+  .featured-projects-grid .project-gallery.collapsible .toggle-icon {
+    display: inline-flex;
+  }
+
+  .featured-projects-grid .project-gallery.collapsible .gallery-title {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3);
+    margin: var(--space-4) calc(-1 * var(--space-3)) var(--space-3);
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-md);
+  }
+
+  .featured-projects-grid .project-gallery.collapsible .gallery-title:hover {
+    background-color: var(--bg-tinted);
+    padding-inline-start: var(--space-4);
+  }
+
+  .featured-projects-grid .project-gallery.collapsible .collapsible-content {
+    max-height: 0 !important;
+    overflow: hidden !important;
+    transition: max-height 0.4s ease-out;
+  }
+
+  .featured-projects-grid .project-gallery.collapsible.active .collapsible-content {
+    max-height: 3000px !important;
+  }
+
+  /* Testimonial compact inside grid */
+  .featured-projects-grid .testimonial-wrapper .testimonial {
+    margin: var(--space-4) 0;
+    padding: var(--space-4);
+  }
+}
+
+/* Placeholder note for upcoming content */
+.placeholder-note {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-tertiary);
+  padding: var(--space-3) 0;
+}
+
 .project-cta-group {
   display: flex;
   gap: var(--space-3);
   margin-top: var(--space-6);
+  margin-bottom: var(--space-12);
   justify-content: center;
   flex-wrap: wrap;
   opacity: 0.85;
@@ -519,7 +604,7 @@ button {
 }
 
 .project-header-simple {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-8);
 }
 
 .project-header-simple h3 {
@@ -577,7 +662,7 @@ button {
 }
 
 .project-section {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
 }
 
 .project-section:last-child {
@@ -592,30 +677,135 @@ button {
 
 .project-section p {
   color: var(--text-secondary);
-  line-height: 1.75;
+  line-height: 1.7;
 }
 
 .testimonial {
-  margin-top: var(--space-8);
-  padding: var(--space-6) 0;
-  border-inline-start: 3px solid var(--accent-primary);
-  padding-inline-start: var(--space-6);
-  font-style: italic;
+  margin: var(--space-16) auto;
+  padding: var(--space-12);
+  max-width: 66rem;
+  background: linear-gradient(135deg, rgba(139, 111, 71, 0.05), rgba(139, 111, 71, 0.02));
+  border-left: 4px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  text-align: left;
 }
 
 .testimonial p {
-  margin-bottom: var(--space-2);
-  color: var(--text-secondary);
-  letter-spacing: 0.05em;
-  line-height: 1.7;
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  font-style: italic;
+  margin-bottom: var(--space-6);
+  letter-spacing: 0.01em;
 }
 
 .testimonial cite {
   display: block;
+  font-family: var(--font-sans);
   font-style: normal;
-  color: var(--text-tertiary);
-  font-size: 0.9375rem;
-  margin-top: var(--space-3);
+  font-weight: 600;
+  color: var(--accent-primary);
+  font-size: 0.875rem;
+  margin-top: var(--space-4);
+  letter-spacing: 0.02em;
+}
+
+.testimonial .highlight-project {
+  font-style: italic;
+  color: var(--accent-primary);
+}
+
+.testimonial .company-name {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Approach Card - similar to testimonial but always visible */
+.approach-card {
+  margin: var(--space-16) auto;
+  padding: var(--space-12);
+  max-width: 66rem;
+  background: linear-gradient(135deg, rgba(139, 111, 71, 0.05), rgba(139, 111, 71, 0.02));
+  border-left: 4px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  text-align: left;
+}
+
+.approach-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  font-weight: 600;
+}
+
+.approach-card__text {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 768px) {
+  .approach-card {
+    padding: var(--space-8);
+    margin: var(--space-12) auto;
+  }
+
+  .approach-card__title {
+    font-size: 1.25rem;
+  }
+
+  .approach-card__text {
+    font-size: 1rem;
+  }
+}
+
+/* Testimonial wrapper for collapsible on mobile */
+.testimonial-wrapper {
+  margin: var(--space-8) 0;
+}
+
+/* Testimonial header (plain title, no collapsible) */
+.testimonial-header {
+  font-size: 1.125rem;
+  margin-bottom: var(--space-3);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+.testimonial-wrapper .testimonial {
+  margin-top: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .testimonial-wrapper {
+    margin-top: var(--space-8);
+  }
+
+  .testimonial {
+    margin: 0;
+    padding: var(--space-4) 0;
+    background: none;
+    border-left: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .testimonial p {
+    font-size: 0.8rem;
+  }
+
+  .testimonial cite {
+    font-size: 0.8125rem;
+  }
 }
 
 /* ============================================================================
@@ -674,6 +864,8 @@ button {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
+  font-size: 0.9375rem;
+  line-height: 1.7;
 }
 
 .collapsible.active .collapsible-content {
@@ -686,7 +878,7 @@ button {
   margin-bottom: var(--space-8);
   border-inline-start: 3px solid var(--pillar-human-primary);
   background: var(--bg-primary);
-  padding: var(--space-4);
+  padding: var(--space-8) var(--space-6) var(--space-12);
   border-radius: var(--radius-md);
   display: grid;
   grid-template-columns: 200px 1fr;
@@ -770,6 +962,54 @@ button {
 }
 
 /* Background Section */
+/* Option 3: Background Lead (Subheadline unter Titel) */
+.background-lead {
+  max-width: 800px;
+  margin: var(--space-6) auto var(--space-8);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .background-lead {
+    font-size: 0.9375rem;
+    margin: var(--space-4) auto var(--space-6);
+  }
+}
+
+/* Option 2: Background Intro Card (auskommentiert in HTML) */
+.background-intro-card {
+  max-width: 66rem;
+  margin: 0 auto var(--space-12);
+  padding: var(--space-8);
+  background: linear-gradient(135deg, rgba(139, 111, 71, 0.05), rgba(139, 111, 71, 0.02));
+  border-left: 4px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.background-intro-card p {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  font-style: italic;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .background-intro-card {
+    padding: var(--space-6);
+  }
+
+  .background-intro-card p {
+    font-size: 1rem;
+  }
+}
+
 .background-content {
   max-width: 800px;
   margin: 0 auto;
@@ -831,6 +1071,24 @@ button {
 
   .section__title {
     font-size: 1.75rem;
+  }
+
+  .featured-project {
+    padding: var(--space-4);
+  }
+
+  .featured-projects-grid {
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 370px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+
+  .featured-project {
+    padding: var(--space-3);
   }
 }
 
@@ -1076,7 +1334,7 @@ html {
 }
 
 .gallery-item {
-  background: #000;
+  background: rgba(0, 0, 0, 0.6);
   border-radius: var(--radius-sm);
   overflow: hidden;
   cursor: pointer;
@@ -1096,7 +1354,7 @@ html {
   height: 100%;
   display: block;
   object-fit: contain;
-  background: #000;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .gallery-item video {
@@ -1104,7 +1362,7 @@ html {
   height: 100%;
   display: block;
   object-fit: contain;
-  background: #000;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .gallery-item.video-item {
@@ -1148,7 +1406,7 @@ html {
   cursor: pointer;
   transition: transform var(--transition-base);
   box-shadow: var(--shadow-sm);
-  background: #000;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 /* Images have consistent 16:9 aspect ratio */
@@ -1173,7 +1431,7 @@ html {
   height: 100%;
   display: block;
   object-fit: contain;
-  background: #000;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .gallery-item-mini video {
@@ -1181,7 +1439,7 @@ html {
   height: 100%;
   display: block;
   object-fit: contain;
-  background: #000;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .gallery-item-mini.video-item {
@@ -1209,8 +1467,8 @@ html {
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
   display: none;
   align-items: center;
   justify-content: center;

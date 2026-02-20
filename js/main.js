@@ -309,14 +309,33 @@ function createLightboxVimeo(media) {
 
     container.style.cssText = `position:relative;width:${width}px;height:${height}px;`;
 
+    // Prepare Vimeo URL for lightbox: enable autoplay but ensure mobile compatibility
+    let vimeoSrc = media.src;
+    // Ensure autoplay=1 and muted=1 for consistent behavior
+    if (!vimeoSrc.includes('autoplay=')) {
+        vimeoSrc += (vimeoSrc.includes('?') ? '&' : '?') + 'autoplay=1';
+    }
+    if (!vimeoSrc.includes('muted=')) {
+        vimeoSrc += '&muted=1';
+    }
+    // Add playsinline for iOS
+    if (!vimeoSrc.includes('playsinline=')) {
+        vimeoSrc += '&playsinline=1';
+    }
+
     // Create iframe
     const iframe = document.createElement('iframe');
-    iframe.src = media.src;
+    iframe.src = vimeoSrc;
     iframe.frameBorder = '0';
     iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
     iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('playsinline', '');
     iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
     iframe.title = media.alt || 'Video';
+
+    // Prevent lightbox from closing when interacting with video
+    container.addEventListener('click', (e) => e.stopPropagation());
 
     container.appendChild(iframe);
     return container;

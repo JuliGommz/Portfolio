@@ -54,3 +54,15 @@ build/
 
 # Backup folder (all temporary and backup files)
 _backups/
+
+# 
+
+# Large video files
+media/Repo/Videos_original/
+media/videos/*.mp4
+
+# Or exclude all video files project-wide
+*.mp4
+*.mov
+*.avi
+
