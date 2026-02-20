@@ -28,11 +28,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The German version (index.html) and English version (index-en.html) have identical HTML structure with only text content differing
   4. The section heading reads "Projekte" (DE) / "Featured Work" (EN) to reflect multiple featured projects
   5. The section works text-only with no broken image placeholders or empty gallery containers
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md -- Add Cognitio article to both DE/EN HTML files with collapsible sections, update section heading
 
 ### Phase 2: Anchor-Pill Navigation
 **Goal**: Visitors can quickly jump to any featured project from a persistent pill bar at the top of the Featured Work section
@@ -70,6 +69,6 @@ Phases execute in numeric order: 1 -> 2 -> 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Cognitio Section | 0/TBD | Not started | - |
+| 1. Cognitio Section | 0/1 | Planning complete | - |
 | 2. Anchor-Pill Navigation | 0/TBD | Not started | - |
 | 3. Visual Consistency and Responsive QA | 0/TBD | Not started | - |
